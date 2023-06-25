@@ -26,6 +26,8 @@ So for the challenge, the single command needed would be cdk deploy from the pro
 
 The CDK project is current hard wired to the account you have me, but there are options to have this deploy to multiple environments if needed.  I did not implement that for this demo.
 
+I hard coded the dynamo table name and zone name in the app.py file.  This would not be how to do it for real.  Depending on the CI/CD environment, these should be pulled from a parameter store of some type.
+
 Everything works from the assignment except the route53 zone.  I don't see that hosted zone in the account and even doing a 'aws route53 list' retuned [].  So if this is from a different account and there is some corss account access policy, I was not sure how to get that working with what I did, do the API is just using the standard dynamic URL.  If you look in the app.py code, you can see how I would get a zone to attach to the gw though
 
 I also deployed this all as a single stack.  This was trivial enough it made sense, but for a larger project you could absolutely break this into more manageble chunks.

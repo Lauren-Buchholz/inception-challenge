@@ -15,7 +15,7 @@ from aws_cdk import (
 from constructs import Construct
 import aws_cdk as cdk
 
-# depployment defaults
+# deployment defaults
 dynamo_table_name = "inception_dynamo_table"
 API_SUBDOMAIN = "jake-sandbox.ihengine.com"
 
@@ -39,13 +39,13 @@ class ICCDKStack(Stack):
 
 #Lambda Rest API Section
         # this is how to deploy a lambda from a docker image
-        LambdaExpress = _lambda.DockerImageFunction(self, "LambdaExpress",
-                                                    function_name="LambdaExpress",
+        LambdaAPI = _lambda.DockerImageFunction(self, "LambdaAPI",
+                                                    function_name="LambdaAPI",
                                                     architecture=_lambda.Architecture.ARM_64,
-                                                    code=_lambda.DockerImageCode.from_image_asset(directory="ic_cdk/app_express")
+                                                    code=_lambda.DockerImageCode.from_image_asset(directory="ic_cdk/app_api")
             )
         # this sets the an env variable for the lambda to know the dynamo table name
-        LambdaExpress.add_environment("DYNAMO_TABLE_NAME", dynamo_table_name)
+        LambdaAPI.add_environment("DYNAMO_TABLE_NAME", dynamo_table_name)
         
     
         ### TODO there are no hosted zones my account sees or can access, so this is just returning []
@@ -57,13 +57,13 @@ class ICCDKStack(Stack):
         gw = api_gateway.LambdaRestApi(
             self,
             'LambdaExpress-api-gateway',
-            handler=LambdaExpress,
+            handler=LambdaAPI,
         )
 
         # this output the dynamic url back to the user during a deploy
         CfnOutput(self, "LambdaExpress-api-gateway-output", value=gw.url)
         #this grants the lambda the ability to read from the dynamo table
-        inception_dynamo_table.grant_read_data(LambdaExpress)
+        inception_dynamo_table.grant_read_data(LambdaAPI)
 
 #Lambda checkin Section
         LambdaCheckin = _lambda.DockerImageFunction(self, "LambdaCheckin",
