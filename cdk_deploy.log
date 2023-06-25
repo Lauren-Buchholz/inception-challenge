@@ -1,0 +1,89 @@
+cdk deploy
+
+✨  Synthesis time: 6.99s
+
+ICCDKStack:  start: Building 4d25d72bda86a867651fb05745dec21a08227c0a4760b879901a01f40c03f4f0:867427102441-us-east-1
+ICCDKStack:  success: Built 4d25d72bda86a867651fb05745dec21a08227c0a4760b879901a01f40c03f4f0:867427102441-us-east-1
+ICCDKStack:  start: Publishing 4d25d72bda86a867651fb05745dec21a08227c0a4760b879901a01f40c03f4f0:867427102441-us-east-1
+ICCDKStack:  success: Published 4d25d72bda86a867651fb05745dec21a08227c0a4760b879901a01f40c03f4f0:867427102441-us-east-1
+This deployment will make potentially sensitive changes according to your current security approval level (--require-approval broadening).
+Please confirm you intend to make the following modifications:
+
+IAM Statement Changes
+┌───┬──────────────────────────────────┬────────┬──────────────────────────────────┬──────────────────────────────────┬─────────────────────────────────────┐
+│   │ Resource                         │ Effect │ Action                           │ Principal                        │ Condition                           │
+├───┼──────────────────────────────────┼────────┼──────────────────────────────────┼──────────────────────────────────┼─────────────────────────────────────┤
+│ + │ ${LambdaCheckin.Arn}             │ Allow  │ lambda:InvokeFunction            │ Service:events.amazonaws.com     │ "ArnLike": {                        │
+│   │                                  │        │                                  │                                  │   "AWS:SourceArn": "${Rule.Arn}"    │
+│   │                                  │        │                                  │                                  │ }                                   │
+├───┼──────────────────────────────────┼────────┼──────────────────────────────────┼──────────────────────────────────┼─────────────────────────────────────┤
+│ + │ ${LambdaCheckin/ServiceRole.Arn} │ Allow  │ sts:AssumeRole                   │ Service:lambda.amazonaws.com     │                                     │
+├───┼──────────────────────────────────┼────────┼──────────────────────────────────┼──────────────────────────────────┼─────────────────────────────────────┤
+│ + │ ${LambdaExpress.Arn}             │ Allow  │ lambda:InvokeFunction            │ Service:apigateway.amazonaws.com │ "ArnLike": {                        │
+│   │                                  │        │                                  │                                  │   "AWS:SourceArn": "arn:aws:execute │
+│   │                                  │        │                                  │                                  │ -api:us-east-1:867427102441:${Lambd │
+│   │                                  │        │                                  │                                  │ aExpress-api-gateway}/${LambdaExpre │
+│   │                                  │        │                                  │                                  │ ssapigatewayDeploymentStageprodA6AA │
+│   │                                  │        │                                  │                                  │ 8C41}/*/*"                          │
+│   │                                  │        │                                  │                                  │ }                                   │
+│ + │ ${LambdaExpress.Arn}             │ Allow  │ lambda:InvokeFunction            │ Service:apigateway.amazonaws.com │ "ArnLike": {                        │
+│   │                                  │        │                                  │                                  │   "AWS:SourceArn": "arn:aws:execute │
+│   │                                  │        │                                  │                                  │ -api:us-east-1:867427102441:${Lambd │
+│   │                                  │        │                                  │                                  │ aExpress-api-gateway}/test-invoke-s │
+│   │                                  │        │                                  │                                  │ tage/*/*"                           │
+│   │                                  │        │                                  │                                  │ }                                   │
+│ + │ ${LambdaExpress.Arn}             │ Allow  │ lambda:InvokeFunction            │ Service:apigateway.amazonaws.com │ "ArnLike": {                        │
+│   │                                  │        │                                  │                                  │   "AWS:SourceArn": "arn:aws:execute │
+│   │                                  │        │                                  │                                  │ -api:us-east-1:867427102441:${Lambd │
+│   │                                  │        │                                  │                                  │ aExpress-api-gateway}/${LambdaExpre │
+│   │                                  │        │                                  │                                  │ ssapigatewayDeploymentStageprodA6AA │
+│   │                                  │        │                                  │                                  │ 8C41}/*/"                           │
+│   │                                  │        │                                  │                                  │ }                                   │
+│ + │ ${LambdaExpress.Arn}             │ Allow  │ lambda:InvokeFunction            │ Service:apigateway.amazonaws.com │ "ArnLike": {                        │
+│   │                                  │        │                                  │                                  │   "AWS:SourceArn": "arn:aws:execute │
+│   │                                  │        │                                  │                                  │ -api:us-east-1:867427102441:${Lambd │
+│   │                                  │        │                                  │                                  │ aExpress-api-gateway}/test-invoke-s │
+│   │                                  │        │                                  │                                  │ tage/*/"                            │
+│   │                                  │        │                                  │                                  │ }                                   │
+├───┼──────────────────────────────────┼────────┼──────────────────────────────────┼──────────────────────────────────┼─────────────────────────────────────┤
+│ + │ ${LambdaExpress/ServiceRole.Arn} │ Allow  │ sts:AssumeRole                   │ Service:lambda.amazonaws.com     │                                     │
+├───┼──────────────────────────────────┼────────┼──────────────────────────────────┼──────────────────────────────────┼─────────────────────────────────────┤
+│ + │ ${inception_dynamo_table.Arn}    │ Allow  │ dynamodb:BatchGetItem            │ AWS:${LambdaExpress/ServiceRole} │                                     │
+│   │                                  │        │ dynamodb:ConditionCheckItem      │                                  │                                     │
+│   │                                  │        │ dynamodb:DescribeTable           │                                  │                                     │
+│   │                                  │        │ dynamodb:GetItem                 │                                  │                                     │
+│   │                                  │        │ dynamodb:GetRecords              │                                  │                                     │
+│   │                                  │        │ dynamodb:GetShardIterator        │                                  │                                     │
+│   │                                  │        │ dynamodb:Query                   │                                  │                                     │
+│   │                                  │        │ dynamodb:Scan                    │                                  │                                     │
+│ + │ ${inception_dynamo_table.Arn}    │ Allow  │ dynamodb:BatchWriteItem          │ AWS:${LambdaCheckin/ServiceRole} │                                     │
+│   │                                  │        │ dynamodb:DeleteItem              │                                  │                                     │
+│   │                                  │        │ dynamodb:DescribeTable           │                                  │                                     │
+│   │                                  │        │ dynamodb:PutItem                 │                                  │                                     │
+│   │                                  │        │ dynamodb:UpdateItem              │                                  │                                     │
+└───┴──────────────────────────────────┴────────┴──────────────────────────────────┴──────────────────────────────────┴─────────────────────────────────────┘
+IAM Policy Changes
+┌───┬──────────────────────────────┬────────────────────────────────────────────────────────────────────────────────┐
+│   │ Resource                     │ Managed Policy ARN                                                             │
+├───┼──────────────────────────────┼────────────────────────────────────────────────────────────────────────────────┤
+│ + │ ${LambdaCheckin/ServiceRole} │ arn:${AWS::Partition}:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole │
+├───┼──────────────────────────────┼────────────────────────────────────────────────────────────────────────────────┤
+│ + │ ${LambdaExpress/ServiceRole} │ arn:${AWS::Partition}:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole │
+└───┴──────────────────────────────┴────────────────────────────────────────────────────────────────────────────────┘
+(NOTE: There may be security-related changes not in this list. See https://github.com/aws/aws-cdk/issues/1299)
+
+Do you wish to deploy these changes (y/n)? y
+ICCDKStack: deploying... [1/1]
+ICCDKStack: creating CloudFormation changeset...
+
+ ✅  ICCDKStack
+
+✨  Deployment time: 135.84s
+
+Outputs:
+ICCDKStack.LambdaExpressapigatewayEndpoint4873EC98 = https://beg82yk0vc.execute-api.us-east-1.amazonaws.com/prod/
+ICCDKStack.LambdaExpressapigatewayoutput = https://beg82yk0vc.execute-api.us-east-1.amazonaws.com/prod/
+Stack ARN:
+arn:aws:cloudformation:us-east-1:867427102441:stack/ICCDKStack/d4ce7a10-1310-11ee-818d-0e233f402623
+
+✨  Total time: 142.83s
